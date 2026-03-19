@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>萌言萌语 - 喵汪加密翻译器</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #ffe6f0 0%, #ffb3d1 50%, #ff99cc 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(255, 105, 180, 0.3);
+            padding: 40px;
+            max-width: 700px;
+            width: 100%;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        h1 {
+            text-align: center;
+            color: #ff69b4;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(255, 182, 193, 0.5);
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #ff91a4;
+            font-size: 1rem;
+            margin-bottom: 30px;
+        }
+
+        .input-group {
+            margin-bottom: 25px;
+        }
+
+        .input-group label {
+            display: block;
+            color: #ff69b4;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .input-group textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: 15px;
+            border: 3px solid #ffb3d1;
+            border-radius: 15px;
+            font-size: 1rem;
+            resize: vertical;
+            transition: all 0.3s ease;
+            background: #fffafa;
+            color: #333;
+        }
+
+        .input-group textarea:focus {
+            outline: none;
+            border-color: #ff69b4;
+            box-shadow: 0 0 15px rgba(255, 105, 180, 0.3);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        button {
+            flex: 1;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(255, 105, 180, 0.2);
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 105, 180, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .encrypt-btn {
+            background: linear-gradient(135deg, #ff69b4, #ff1493);
+            color: white;
+        }
+
+        .decrypt-btn {
+            background: linear-gradient(135deg, #ff91a4, #ff69b4);
+            color: white;
+        }
+
+        .clear-btn {
+            background: linear-gradient(135deg, #ffb3d1, #ff91a4);
+            color: white;
+        }
+
+        .copy-btn {
+            background: linear-gradient(135deg, #ff91a4, #ff69b4);
+            color: white;
+        }
+
+        .result-group {
+            background: #fff0f5;
+            border-radius: 15px;
+            padding: 20px;
+            border: 3px dashed #ffb3d1;
+        }
+
+        .result-group label {
+            display: block;
+            color: #ff69b4;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        #result {
+            width: 100%;
+            min-height: 120px;
+            padding: 15px;
+            background: white;
+            border-radius: 10px;
+            font-size: 1rem;
+            line-height: 1.6;
+            word-wrap: break-word;
+            color: #333;
+        }
+
+        .decorations {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+            font-size: 2rem;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌸 萌言萌语 🌸</h1>
+        <p class="subtitle">喵汪加密翻译器，让你的悄悄话萌萌哒～</p>
+
+        <div class="input-group">
+            <label for="input">📝 输入内容：</label>
+            <textarea id="input" placeholder="输入你想加密的文字（中文、英文都可以）或者要解密的喵汪语言..."></textarea>
+        </div>
+
+        <div class="button-group">
+            <button class="encrypt-btn" onclick="encrypt()">🐱 加密成喵汪</button>
+            <button class="decrypt-btn" onclick="decrypt()">🐶 解密成文字</button>
+            <button class="clear-btn" onclick="clearAll()">✨ 清空</button>
+        </div>
+
+        <div class="result-group">
+            <label for="result">📋 翻译结果：</label>
+            <div id="result" contenteditable="false">等待翻译...</div>
+        </div>
+
+        <div class="button-group" style="margin-top: 15px;">
+            <button class="copy-btn" onclick="copyResult()">📋 复制结果</button>
+        </div>
+
+        <div class="decorations">
+            <span>💕</span>
+            <span>🌸</span>
+            <span>✨</span>
+            <span>🌸</span>
+            <span>💕</span>
+        </div>
+    </div>
+
+    <script>
+        // 加密函数：文字 -> 喵汪
+        function encrypt() {
+            const input = document.getElementById('input').value;
+            if (!input.trim()) {
+                alert('请输入要加密的内容～');
+                return;
+            }
+
+            let result = '';
+            for (let i = 0; i < input.length; i++) {
+                const charCode = input.charCodeAt(i);
+                const binary = charCode.toString(2);
+                const encrypted = binary.replace(/0/g, '喵').replace(/1/g, '汪');
+                result += encrypted + '|';
+            }
+
+            document.getElementById('result').textContent = result.slice(0, -1); // 移除最后的|
+            document.getElementById('result').style.color = '#ff69b4';
+        }
+
+        // 解密函数：喵汪 -> 文字
+        function decrypt() {
+            const input = document.getElementById('input').value.trim();
+            if (!input) {
+                alert('请输入要解密的喵汪语言～');
+                return;
+            }
+
+            // 用|作为分隔符分割每个字符
+            const groups = input.split('|').filter(g => g.trim());
+            let result = '';
+
+            for (const group of groups) {
+                const cleanGroup = group.replace(/[^喵汪]/g, '');
+
+                if (cleanGroup.length > 0) {
+                    const binary = cleanGroup.replace(/喵/g, '0').replace(/汪/g, '1');
+                    const charCode = parseInt(binary, 2);
+                    result += String.fromCharCode(charCode);
+                }
+            }
+
+            document.getElementById('result').textContent = result || '解密失败，请检查喵汪格式～';
+            document.getElementById('result').style.color = '#ff69b4';
+        }
+
+        // 清空函数
+        function clearAll() {
+            document.getElementById('input').value = '';
+            document.getElementById('result').textContent = '等待翻译...';
+        }
+
+        // 复制结果函数
+        function copyResult() {
+            const result = document.getElementById('result').textContent;
+            if (result === '等待翻译...' || result === '解密失败，请检查喵汪格式～') {
+                alert('没有可复制的内容～');
+                return;
+            }
+
+            navigator.clipboard.writeText(result).then(() => {
+                alert('复制成功！现在可以粘贴到其他地方啦～');
+            }).catch(err => {
+                alert('复制失败，请手动复制～');
+            });
+        }
+
+        // 添加一些可爱的交互
+        document.addEventListener('DOMContentLoaded', function() {
+            const emojis = ['🐱', '🐶', '💕', '🌸', '✨'];
+            let index = 0;
+
+            setInterval(() => {
+                document.title = `${emojis[index]} 萌言萌语 ${emojis[index]}`;
+                index = (index + 1) % emojis.length;
+            }, 2000);
+        });
+    </script>
+</body>
+</html>
